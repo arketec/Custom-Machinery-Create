@@ -21,7 +21,17 @@ public class ContraptionRequirementCT {
 
     @Method
     public static CustomCraftRecipeCTBuilder requireSU(CustomCraftRecipeCTBuilder builder, float speed, float stressImpact) {
-        return addContraptionRequirement(builder, RequirementIOMode.INPUT, speed, stressImpact);
+        return addContraptionRequirement(builder, RequirementIOMode.INPUT, speed, stressImpact, false);
+    }
+
+    @Method
+    public static CustomCraftRecipeCTBuilder requireScalingSU(CustomCraftRecipeCTBuilder builder, float speed) {
+        return requireScalingSU(builder, speed, 0.0F);
+    }
+
+    @Method
+    public static CustomCraftRecipeCTBuilder requireScalingSU(CustomCraftRecipeCTBuilder builder, float speed, float stressImpact) {
+        return addContraptionRequirement(builder, RequirementIOMode.INPUT, speed, stressImpact, true);
     }
 
     @Method
@@ -31,14 +41,16 @@ public class ContraptionRequirementCT {
 
     @Method
     public static CustomCraftRecipeCTBuilder produceSU(CustomCraftRecipeCTBuilder builder, float speed, float stressCapacity) {
-        return addContraptionRequirement(builder, RequirementIOMode.OUTPUT, speed, stressCapacity);
+        return addContraptionRequirement(builder, RequirementIOMode.OUTPUT, speed, stressCapacity, false);
     }
 
-    private static CustomCraftRecipeCTBuilder addContraptionRequirement(CustomCraftRecipeCTBuilder builder, RequirementIOMode mode, float speed, float stress) {
+    private static CustomCraftRecipeCTBuilder addContraptionRequirement(CustomCraftRecipeCTBuilder builder, RequirementIOMode mode, float speed, float stress, boolean scaling) {
         if(speed < 0)
             return builder.error("Speed value cannot be negative: {}", speed);
         if(stress < 0)
             return builder.error("Stress value cannot be negative: {}", stress);
-        return builder.addRequirement(new ContraptionRequirement(mode, speed, stress));
+        if(scaling && mode == RequirementIOMode.OUTPUT)
+            return builder.error("Scaling can only be enabled in input mode");
+        return builder.addRequirement(new ContraptionRequirement(mode, speed, stress, scaling));
     }
 }

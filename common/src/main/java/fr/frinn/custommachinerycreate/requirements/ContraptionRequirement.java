@@ -24,17 +24,20 @@ public class ContraptionRequirement extends AbstractRequirement<ContraptionMachi
             contraptionRequirementInstance.group(
                     RequirementIOMode.CODEC.fieldOf("mode").forGetter(IRequirement::getMode),
                     NamedCodec.floatRange(0.0F, Float.MAX_VALUE).fieldOf("speed").forGetter(requirement -> requirement.speed),
-                    NamedCodec.floatRange(0.0F, Float.MAX_VALUE).optionalFieldOf("stress", 0.0F).forGetter(requirement -> requirement.stress)
+                    NamedCodec.floatRange(0.0F, Float.MAX_VALUE).optionalFieldOf("stress", 0.0F).forGetter(requirement -> requirement.stress),
+                    NamedCodec.BOOL.optionalFieldOf("scaling", false).forGetter(requirement -> requirement.scaling)
             ).apply(contraptionRequirementInstance, ContraptionRequirement::new), "Contraption requirement"
     );
 
     private final float speed;
     private final float stress;
+    private final boolean scaling;
 
-    public ContraptionRequirement(RequirementIOMode mode, float speed, float stress) {
+    public ContraptionRequirement(RequirementIOMode mode, float speed, float stress, boolean scaling) {
         super(mode);
         this.speed = speed;
         this.stress = stress;
+        this.scaling = scaling;
     }
 
     @Override
@@ -61,9 +64,11 @@ public class ContraptionRequirement extends AbstractRequirement<ContraptionMachi
     public CraftingResult processStart(ContraptionMachineComponent component, ICraftingContext context) {
         float speed = (float)context.getModifiedValue(this.speed, this, null);
         float stress = (float)context.getModifiedValue(this.stress, this, "stress");
-        if(getMode() == RequirementIOMode.INPUT)
+        if(getMode() == RequirementIOMode.INPUT) {
             component.set(0, 0.0F, stress);
-        else
+            if(this.scaling)
+                context.setBaseSpeed(Math.abs(component.getFakeTile().getTheoreticalSpeed()) / speed);
+        } else
             component.set(speed, stress, 0.0F);
         return CraftingResult.pass();
     }
@@ -85,6 +90,9 @@ public class ContraptionRequirement extends AbstractRequirement<ContraptionMachi
         else if(component.getFakeTile().isOverStressed())
             return CraftingResult.error(Component.translatable("custommachinerycreate.requirement.contraption.error.stress.input"));
 
+        if(this.scaling)
+            context.setBaseSpeed(Math.abs(component.getFakeTile().getTheoreticalSpeed()) / speed);
+
         return CraftingResult.success();
     }
 
@@ -95,5 +103,7 @@ public class ContraptionRequirement extends AbstractRequirement<ContraptionMachi
         info.addTooltip(Component.translatable("custommachinerycreate.requirement.contraption.info.speed." + mode, this.speed));
         if(this.stress != 0)
             info.addTooltip(Component.translatable("custommachinerycreate.requirement.contraption.info.stress." + mode, this.stress));
+        if(this.scaling)
+            info.addTooltip(Component.translatable("custommachinerycreate.requirement.contraption.info.scaling"));
     }
 }
