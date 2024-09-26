@@ -1,7 +1,7 @@
 package fr.frinn.custommachinerycreate;
 
 import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.Registries;
+import dev.architectury.registry.registries.RegistrarManager;
 import dev.architectury.registry.registries.RegistrySupplier;
 import fr.frinn.custommachinery.api.ICustomMachineryAPI;
 import fr.frinn.custommachinery.api.component.MachineComponentType;
@@ -13,7 +13,7 @@ import fr.frinn.custommachinerycreate.requirements.ContraptionRequirement;
 
 public class Registration {
 
-    public static final Registries REGISTRIES = Registries.get(CustomMachineryCreate.MODID);
+    public static final RegistrarManager REGISTRIES = RegistrarManager.get(CustomMachineryCreate.MODID);
     public static final DeferredRegister<GuiElementType<?>> GUI_ELEMENTS = DeferredRegister.create(ICustomMachineryAPI.INSTANCE.modid(), GuiElementType.REGISTRY_KEY);
     public static final DeferredRegister<MachineComponentType<?>> MACHINE_COMPONENTS = DeferredRegister.create(ICustomMachineryAPI.INSTANCE.modid(), MachineComponentType.REGISTRY_KEY);
     public static final DeferredRegister<RequirementType<?>> REQUIREMENTS = DeferredRegister.create(ICustomMachineryAPI.INSTANCE.modid(), RequirementType.REGISTRY_KEY);

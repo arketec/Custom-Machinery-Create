@@ -2,7 +2,7 @@ package fr.frinn.custommachinerycreate.forge;
 
 import dev.architectury.platform.forge.EventBuses;
 import fr.frinn.custommachinerycreate.CustomMachineryCreate;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -23,7 +23,7 @@ public class CustomMachineryCreateForge {
      * Delay the initialization of the deferred registries because CM might not have created the registries at that time.
      */
     private void onRegister(final RegisterEvent event) {
-        if(event.getRegistryKey() == Registry.BLOCK_REGISTRY)
+        if(event.getRegistryKey() == Registries.BLOCK)
             CustomMachineryCreate.init();
     }
 }
