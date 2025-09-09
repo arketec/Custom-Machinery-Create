@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id 'com.gradleup.shadow' version '8.3.6'
     id "me.shedaniel.unified-publishing"
 }
 
@@ -17,6 +17,7 @@ configurations {
 }
 
 repositories {
+    mavenLocal()
     // mavens for Fabric-exclusives
     maven { url = "https://api.modrinth.com/maven" } // LazyDFU
     maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
@@ -25,6 +26,7 @@ repositories {
     maven { url = "https://maven.cafeteria.dev/releases" } // Fake Player API
     maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
     maven { url = "https://jitpack.io" } // Mixin Extras, Fabric ASM
+
 }
 
 dependencies {
@@ -36,8 +38,8 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive = false }
 
     // Create - dependencies are added transitively
-    modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
-
+    //modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
+    modImplementation "com.simibubi.create:create-fabric-1.20.1:6.0.7.0+mc1.20.1-local"
     // JEI
     modLocalRuntime modCompileOnly("mezz.jei:jei-${project.minecraft_version}-common-api:${project.jei_version}")
     modLocalRuntime modCompileOnly("mezz.jei:jei-${project.minecraft_version}-fabric-api:${project.jei_version}")

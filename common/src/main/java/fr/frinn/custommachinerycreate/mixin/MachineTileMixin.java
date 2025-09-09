@@ -1,11 +1,11 @@
 package fr.frinn.custommachinerycreate.mixin;
 
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.content.equipment.goggles.IHaveHoveringInformation;
-import com.simibubi.create.content.schematics.requirement.ISpecialBlockEntityItemRequirement;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
+import com.simibubi.create.api.schematic.nbt.PartialSafeNBT;
+import com.simibubi.create.api.schematic.requirement.SpecialBlockEntityItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement.ItemUseType;
-import com.simibubi.create.foundation.utility.IPartialSafeNBT;
 import fr.frinn.custommachinery.api.machine.ICustomMachine;
 import fr.frinn.custommachinery.api.machine.MachineTile;
 import fr.frinn.custommachinery.common.init.CustomMachineItem;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.List;
 
 @Mixin(MachineTile.class)
-public abstract class MachineTileMixin implements IHaveGoggleInformation, IHaveHoveringInformation, IPartialSafeNBT, ISpecialBlockEntityItemRequirement {
+public abstract class MachineTileMixin implements IHaveGoggleInformation, IHaveHoveringInformation, PartialSafeNBT, SpecialBlockEntityItemRequirement {
 
     @Shadow(remap = false)
     public abstract ICustomMachine getMachine();

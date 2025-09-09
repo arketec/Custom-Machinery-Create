@@ -4,6 +4,8 @@ architectury {
 
 repositories {
     // mavens for Create Fabric and dependencies
+
+    mavenLocal()
     maven { url = "https://api.modrinth.com/maven" } // LazyDFU
     maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
     maven { url = "https://mvn.devos.one/snapshots/" } // Create Fabric, Porting Lib, Forge Tags, Milk Lib, Registrate Fabric
@@ -23,7 +25,8 @@ dependencies {
     // dependencies must also be pulled in to minimize problems, from remapping issues to compile errors.
     // All dependencies except Flywheel and Registrate are NOT safe to use!
     // Flywheel and Registrate must also be used carefully due to differences.
-    modCompileOnly("com.simibubi.create:create-fabric-${project.minecraft_version}:${project.create_fabric_version}")
+    //modCompileOnly("com.simibubi.create:create-fabric-${project.minecraft_version}:${project.create_fabric_version}")
+    modCompileOnly "com.simibubi.create:create-fabric-1.20.1:6.0.7.0+mc1.20.1-local"
 
     // Custom Machinery
     api "curse.maven:custommachinery-fork-1058446:${project.custommachinery_file_id_forge}"

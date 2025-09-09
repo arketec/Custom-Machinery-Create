@@ -1,9 +1,10 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.5.+" apply false
+    id "dev.architectury.loom" version "1.11-SNAPSHOT" apply false
     id "io.github.juuxel.loom-quiltflower" version "1.+" apply false // Quiltflower, a better decompiler
     id "io.github.p03w.machete" version "1.+" // automatic jar compressing on build
     id "me.shedaniel.unified-publishing" version "0.1.+" apply false
+
 }
 
 architectury {
@@ -19,17 +20,40 @@ subprojects {
 
     repositories {
         mavenCentral()
+        maven {
+            url = "https://maven.createmod.net"
+            content {
+                includeGroup "net.createmod.ponder"
+                includeGroup("dev.engine-room.flywheel")
+                includeGroup("dev.engine-room")         // <-- add this
+            }
+        }
+
+        // ✅ Flywheel (update filter to new groupId)
+        maven {
+            url = "https://maven.tterrag.com/"
+            content {
+                includeGroup("com.jozufozu.flywheel")   // keep older coords too if needed
+            }
+        }
+
+        // ✅ Porting-Lib (releases + snapshots, both often used)
+        maven {
+            url = "https://mvn.devos.one/releases"
+            content { includeGroup "io.github.fabricators_of_create.Porting-Lib" }
+        }
+        maven {
+            url = "https://mvn.devos.one/snapshots"
+            content { includeGroup "io.github.fabricators_of_create.Porting-Lib" }
+        }
+
+        // ✅ ForgeConfigAPIPort (fabric)
+        maven{ url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven" }
         maven { url = "https://maven.shedaniel.me/" } // Cloth Config, REI
         maven { url = "https://dvs1.progwml6.com/files/maven/" } // JEI
         maven { url = "https://maven.parchmentmc.org" } // Parchment mappings
         maven { url = "https://maven.quiltmc.org/repository/release" } // Quilt Mappings
-        maven { // Flywheel
-            url = "https://maven.tterrag.com/"
-            content {
-                // need to be specific here due to version overlaps
-                includeGroup("com.jozufozu.flywheel")
-            }
-        }
+
         maven {
             name = 'BlameJared Maven'
             url = 'https://maven.blamejared.com'
@@ -68,10 +92,30 @@ allprojects {
         }
         maven {
             name = "Latvian maven"
+            url = "https://maven.latvian.dev/releases"
+            content {
+                includeGroup "dev.latvian.mods"
+                includeGroup "dev.latvian.apps"
+            }
+        }
+        maven {
+            url 'https://jitpack.io'
+            content {
+                includeGroup "com.github.rtyley"
+            }
+        }
+        maven {
+            // Shedaniel's maven (Architectury API)
+            url = "https://maven.architectury.dev"
+            content {
+                includeGroup "dev.architectury"
+            }
+        }
+        maven {
+            // saps.dev Maven (KubeJS and Rhino)
             url = "https://maven.saps.dev/minecraft"
             content {
                 includeGroup "dev.latvian.mods"
-                includeGroup "dev.ftb.mods"
             }
         }
         maven {
@@ -92,10 +136,14 @@ allprojects {
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
+        options.release = 17
     }
 
     java {
         withSourcesJar()
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
     }
     if(project.path != ':common' && project.path != ':') {
         publishing {
