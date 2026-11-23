@@ -63,11 +63,13 @@ dependencies {
     implementation("io.github.llamalad7:mixinextras-forge:0.4.1")
 
     // Custom Machinery
-    api "curse.maven:custommachinery-fork-1058446:${project.custommachinery_file_id_forge}"
+    modImplementation "curse.maven:custommachinery-fork-1058446:${project.custommachinery_file_id_forge}"
 
     //KubeJS
     modLocalRuntime modCompileOnly("dev.latvian.mods:kubejs-forge:${project.kubejs_version}")
     localRuntime("io.github.llamalad7:mixinextras-forge:0.2.0-rc.4")
+
+    modLocalRuntime("com.communi-suggestu.saecularia-caudices:saecularia-caudices-forge:${project.saecularia_caudices_version}") { transitive = false }
 }
 
 processResources {
